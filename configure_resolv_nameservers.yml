@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+  vars:
+    nameserver1: 8.8.8.8
+    nameserver2: 8.8.4.4
+  tasks:
+  - lineinfile:
+      path: "/etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4['interface'] }}"
+      state: present
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+    with_items:
+      - {regexp: "^DNS1=", line: "DNS1={{ nameserver1 }}"}
+      - {regexp: "^DNS2=", line: "DNS2={{ nameserver2 }}"}
+    notify:
+      - restart network service
+  handlers:
+  - name: restart network service
+    command: "systemctl restart network"
