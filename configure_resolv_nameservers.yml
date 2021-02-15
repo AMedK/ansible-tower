@@ -2,8 +2,8 @@
 - hosts: all
   become: true
   vars:
-    nameserver1: 41.228.228.228
-    nameserver2: 41.228.229.229
+    nameserver1: 8.8.8.8
+    nameserver2: 8.8.4.4
   tasks:
   - lineinfile:
       path: "/etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4['interface'] }}"
